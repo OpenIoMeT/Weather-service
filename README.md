@@ -1,9 +1,9 @@
 # Weather-service
 Module which gets weather data using Yahoo Weather api
 
-**JSON Structure**
+```json
 
-/*{
+{
  "query": {
   "count": 1,
   "created": "2016-01-10T08:45:33Z",
@@ -112,5 +112,5 @@ Module which gets weather data using Yahoo Weather api
    }
   }
  }
-}*/
-**
+}
+```

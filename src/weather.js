@@ -2,7 +2,9 @@
 
 var https = require('https');
 
-var yahooWeather = function(){}
+var yahooWeather = function(location){
+	this.location = location;
+}
 
 var getWeather = function (location) {
 
@@ -27,12 +29,12 @@ var getWeather = function (location) {
 
 }
 
-yahooWeather.prototype.getFullWeather = function (location) {
+yahooWeather.prototype.getFullWeather = function () {
 	return new Promise( function(response,reject){
-		getWeather(location).then(function(ans){response(ans);});
+		getWeather(this.location).then(function(ans){response(ans);});
 	});
 }
-
+/*
 yahooWeather.prototype.getSimpleWeather = function (location) {
 	return new Promise( function(response,reject){
 		getWeather(location).then( function(yw){
@@ -58,6 +60,6 @@ yahooWeather.prototype.getSimpleWeather = function (location) {
 			}
 		});
 	});
-}
+}*/
 
-module.exports = new yahooWeather();
+module.exports = yahooWeather;

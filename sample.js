@@ -1,4 +1,4 @@
-var yw = require('./src/weather.js');
+var yw = new (require('./src/yahooWeather.js'))('PATNA');
 
 yw.getFullWeather('New Delhi', 'IN').then(function(res){
 	var ch = res.query.results.channel;

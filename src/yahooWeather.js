@@ -1,8 +1,8 @@
 'use strict'
 
 var https = require('https');
-
 class weather {
+
 	constructor(userArea) {
 		this.weatherCondition = [
 			"tornado", "tropical storm", "hurricane", "severe thunderstorms", "thunderstorms", "mixed rain and snow",
@@ -15,16 +15,16 @@ class weather {
 		];
 		
 		this.userArea = userArea;
-		this.fullWeatherObject = this.getFullWeather().then((weatherData) => weatherData.query.results.channel);
+	}
+
+	init(weatherData) {
+		this.fullWeatherObject =  weatherData.query.results.channel;
 		this.weatherItem = this.fullWeatherObject.item;
+	}
 
-	};
-
-
-	getFullWeather() {
-		return new Promise( function(response,reject){
-			var yahooQueryLang = 'select * from weather.forecast where woeid in (select woeid from geo.places(1) where text="'+this.userArea+'")';
-			var locationUrl = 'https://query.yahooapis.com/v1/public/yql?q="' + yahooQueryLang +'"&format=json&env=store://datatables.org/alltableswithkeys';
+	getWeather() {
+		return new Promise((response,reject) => {
+			var locationUrl = 'https://query.yahooapis.com/v1/public/yql?q=select * from weather.forecast where woeid in (select woeid from geo.places(1) where text="'+this.userArea+'")&format=json&env=store://datatables.org/alltableswithkeys';
 
 			https.get(locationUrl, function (res) {
 				res.setEncoding('binary');
@@ -37,6 +37,14 @@ class weather {
 					var result = JSON.parse(resData);
 					response(result);
 				});
+			});
+		});
+	}
+
+	getFullWeather() {
+		return new Promise((response,reject) => {
+			this.getWeather().then(function(ans){
+				response(ans);
 			});
 		});
 	}

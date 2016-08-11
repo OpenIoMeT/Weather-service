@@ -1,8 +1,9 @@
-var yw = new (require('./src/yahooWeather.js'))('PATNA');
+var yahooWeatherShim = require('./src/yahooWeather.js');
+var place = "New Delhi";
 
-yw.getFullWeather('New Delhi', 'IN').then(function(res){
-	var ch = res.query.results.channel;
-	for(var i in ch){
-		console.log(ch[i]);
-	}
+var weatherData = new yahooWeatherShim(place);
+
+weatherData.getFullWeather().then(function(res){
+	weatherData.init(res);
+	console.log(weatherData.getForecast());
 });

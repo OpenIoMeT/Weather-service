@@ -1,6 +1,9 @@
 {
   "devDependencies": {
     "chai": "^3.5.0",
+    "gulp": "^3.9.1",
+    "gulp-jshint": "^2.0.1",
+    "jshint": "^2.8.0",
     "sinon": "^1.17.5"
   }
 }

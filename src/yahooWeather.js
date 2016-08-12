@@ -1,17 +1,18 @@
 (function() {
-'use strict'
+'use strict';
 
 const request = require('superagent');
 
-class weather {
+class Weather {
 
-	constructor(userArea) {
+	init(userArea) {
 		this.userArea = userArea;
-	}
 
-	init(weatherData) {
-		this.fullWeatherObject = weatherData.query.results.channel;
-		this.weatherItem = weatherData.query.results.channel.item;
+		return new Promise((response,reject) => {
+			this.getWeather().then(function(weatherData){
+				response(weatherData);
+			});
+		});
 	}
 
 	getWeather() {
@@ -25,12 +26,9 @@ class weather {
 		});
 	}
 
-	getFullWeather() {
-		return new Promise((response,reject) => {
-			this.getWeather().then(function(ans){
-				response(ans);
-			});
-		});
+	setWeatherData(weatherData) {
+		this.fullWeatherObject = weatherData.query.results.channel;
+		this.weatherItem = weatherData.query.results.channel.item;
 	}
 
 	getUserLocation() {
@@ -72,5 +70,5 @@ class weather {
 
 }
 
-module.exports = weather;
+module.exports = new Weather();
 }(this));

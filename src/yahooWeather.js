@@ -70,5 +70,5 @@ class Weather {
 
 }
 
-module.exports = new Weather();
+module.exports = Weather;
 }(this));

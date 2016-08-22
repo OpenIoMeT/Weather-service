@@ -5,24 +5,18 @@ const request = require('superagent');
 
 class Weather {
 
-	init(userArea) {
-		this.userArea = userArea;
+	fetch(userArea) {
+		var yahooapis = 'https://query.yahooapis.com/v1/public/yql?q=';
+		var yql = 'select * from weather.forecast where woeid in (select woeid from geo.places(1) where text="' + userArea + '")';
+		var dataformat = 'json';
+		var queryurl = yahooapis + yql + '&format=' + dataformat;
 
 		return new Promise((response,reject) => {
-			this.getWeather().then(function(weatherData){
-				response(weatherData);
-			});
-		});
-	}
-
-	getWeather() {
-		return new Promise((response,reject) => {
-			var apiUrl = 'https://query.yahooapis.com/v1/public/yql?q=';
-			var yql = apiUrl + 'select * from weather.forecast where woeid in (select woeid from geo.places(1) where text="'+this.userArea+'")&format=json';
-
 			request
-			 	.get(yql)
+				.get(queryurl)
 				.end((err, res) => response(JSON.parse(res.text)));
+		}).then((weatherData) => {
+			this.setWeatherData(weatherData);
 		});
 	}
 

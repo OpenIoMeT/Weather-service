@@ -3,7 +3,6 @@ var place = "New Delhi";
 
 var weather = new yahooWeather();
 
-weather.init(place).then(function(weatherData){
-	weather.setWeatherData(weatherData);
+weather.fetch(place).then(function(){
 	console.log(weather.getLatLong());
 });

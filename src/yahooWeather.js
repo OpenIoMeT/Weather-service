@@ -1,36 +1,28 @@
 (function() {
-'use strict'
+'use strict';
 
 const request = require('superagent');
 
-class weather {
+class Weather {
 
-	constructor(userArea) {
-		this.userArea = userArea;
+	fetch(userArea) {
+		var yahooapis = 'https://query.yahooapis.com/v1/public/yql?q=';
+		var yql = 'select * from weather.forecast where woeid in (select woeid from geo.places(1) where text="' + userArea + '")';
+		var dataformat = 'json';
+		var queryurl = yahooapis + yql + '&format=' + dataformat;
+
+		return new Promise((response,reject) => {
+			request
+				.get(queryurl)
+				.end((err, res) => response(JSON.parse(res.text)));
+		}).then((weatherData) => {
+			this.setWeatherData(weatherData);
+		});
 	}
 
-	init(weatherData) {
+	setWeatherData(weatherData) {
 		this.fullWeatherObject = weatherData.query.results.channel;
 		this.weatherItem = weatherData.query.results.channel.item;
-	}
-
-	getWeather() {
-		return new Promise((response,reject) => {
-			var apiUrl = 'https://query.yahooapis.com/v1/public/yql?q=';
-			var yql = apiUrl + 'select * from weather.forecast where woeid in (select woeid from geo.places(1) where text="'+this.userArea+'")&format=json';
-
-			request
-			 	.get(yql)
-				.end((err, res) => response(JSON.parse(res.text)));
-		});
-	}
-
-	getFullWeather() {
-		return new Promise((response,reject) => {
-			this.getWeather().then(function(ans){
-				response(ans);
-			});
-		});
 	}
 
 	getUserLocation() {
@@ -72,5 +64,5 @@ class weather {
 
 }
 
-module.exports = weather;
+module.exports = Weather;
 }(this));

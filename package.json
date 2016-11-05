@@ -2,5 +2,8 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "sinon": "^1.17.5"
+  },
+  "dependencies": {
+    "superagent": "^2.3.0"
   }
 }
